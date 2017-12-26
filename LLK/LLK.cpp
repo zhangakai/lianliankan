@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "LLK.h"
 #include "LLKDlg.h"
+#include "GameDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

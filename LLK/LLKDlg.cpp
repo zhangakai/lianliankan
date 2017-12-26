@@ -1,10 +1,11 @@
-
+	
 // LLKDlg.cpp : 实现文件
 //
 
 #include "stdafx.h"
 #include "LLK.h"
 #include "LLKDlg.h"
+#include "GameDlg.h"
 #include "afxdialogex.h"
 
 #ifdef _DEBUG
@@ -55,6 +56,23 @@ CLLKDlg::CLLKDlg(CWnd* pParent /*=NULL*/)
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
+void CLLKDlg::InitBackgroud()
+{
+	CBitmap bmpMain;
+	bmpMain.LoadBitmapW(IDB_MAIN_BG);
+	CClientDC dc(this);
+	m_dcMem.CreateCompatibleDC(&dc);
+	m_dcMem.SelectObject(bmpMain);
+	CRect rtWin;
+	CRect rtClient;
+	this->GetWindowRect(rtWin);
+	this->GetClientRect(rtClient); 
+	int nSpanWidth = rtWin.Width() - rtClient.Width();
+	int nSpanHeight = rtWin.Height() - rtClient.Height();
+	MoveWindow(0, 0, 800 + nSpanWidth, 600 + nSpanHeight);
+	CenterWindow();
+}
+
 void CLLKDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
@@ -64,6 +82,7 @@ BEGIN_MESSAGE_MAP(CLLKDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_BTN_BASIC, &CLLKDlg::OnClickedBtnBasic)
 END_MESSAGE_MAP()
 
 
@@ -71,7 +90,8 @@ END_MESSAGE_MAP()
 
 BOOL CLLKDlg::OnInitDialog()
 {
-	CDialogEx::OnInitDialog();
+	CDialogEx::OnInitDialog(); 
+	InitBackgroud();
 
 	// 将“关于...”菜单项添加到系统菜单中。
 
@@ -140,7 +160,9 @@ void CLLKDlg::OnPaint()
 		dc.DrawIcon(x, y, m_hIcon);
 	}
 	else
-	{
+	{   
+		CPaintDC dc(this);
+		dc.BitBlt(0, 0, 800, 600, &m_dcMem, 0, 0, SRCCOPY);
 		CDialogEx::OnPaint();
 	}
 }
@@ -152,3 +174,24 @@ HCURSOR CLLKDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
+void CLLKDlg::OnBnClickedButton1()
+{
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CLLKDlg::OnBnClickedButton8()
+{
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CLLKDlg::OnClickedBtnBasic()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	ShowWindow(SW_HIDE);
+	CGameDlg dlg;
+	dlg.DoModal();
+}
